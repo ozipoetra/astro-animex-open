@@ -1,0 +1,45 @@
+---
+const { pageData } = Astro.props;
+---
+
+<div id="swup" class="card card-body blur shadow-blur mx-md-8 mt-n6 transition-main">
+    <section class="py-md-7 py-3 position-relative">
+      <div class="container">
+          <div class="row align-items-center">
+           <div class="col-md-6 mx-auto mb-5">
+             <div class="d-flex justify-content-evenly position-relative">
+               <a href="/anime/ongoing" class="btn btn-light" title="Ongoing Anime">Ongoing</a>
+               <a href="#" class="btn btn-light" title="Completed Anime">Completed</a>
+             </div>
+           </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-12 mx-auto mb-5">
+            <h2 class="position-relative">Completed Anime</h2>
+            <p class="text-dark mb-0">Anime yang sudah tamat dan selesai ditayangkan.</p>
+          </div>
+        </div>
+        <div class="row text-center" itemscope itemtype="https://schema.org/Movie">
+          <slot />
+        </div>
+      </div>
+    </section>
+    <section class="position-relative">
+      <div class="container">
+        <div class="row align-items-center justify-space-between text-center">
+          <div class="col-md-12 mx-auto mb-4">
+            <ul class="pagination pagination-primary d-flex justify-content-center">
+{ pageData.page.map((i: any) =>
+              <li class="page-item">
+                <a class="page-link" href=`/anime/completed/${ i.url }` aria-label={ i.title } title={ i.title }>{ i.title.replace("Berikutnya ","").replace(" Sebelumnya","") }
+                </a>
+              </li>
+)}
+            </ul>
+            <p>
+              Page: { pageData.current }
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,9 @@
+---
+import { fade } from "astro:transitions";
+---
+
+<div class="card card-body blur shadow-blur mx-md-8 mt-n6">
+  <main transition:name="main" transition:animate={fade({ duration: '1s' })}>
+  <slot />
+  </main>
+</div>

@@ -1,0 +1,30 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/inc/Header.astro';
+
+import { siteConfig } from '../config';
+
+let pageMeta = {
+  title: `Halaman Tidak Ditemukan - ${ siteConfig.title }`,
+  keywords: siteConfig.keywords,
+  description: siteConfig.description,
+  image: siteConfig.backgrounds,
+}
+---
+
+<BaseLayout pageMeta={ pageMeta }>
+  <Header siteTitle={ siteConfig.title } />
+  <div class="card card-body blur shadow-blur mx-md-8 mt-n6 transition-main">
+    <section class="py-md-7 py-3 position-relative">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-12 mx-auto mb-5">
+            <h3 class="z-index-4 position-relative">Halaman Tidak Ditemukan</h3>
+            <p class="text-dark opacity-8 mb-0">Halaman yang kamu cari tidak ditemukan atau mungkin sudah dihapus.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

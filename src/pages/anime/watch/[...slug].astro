@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ViewLayout from '../../../layouts/ViewLayout.astro';
+import HeaderView from '../../../components/inc/HeaderView.astro';
+import { siteConfig } from '../../../config';
+const { slug } = Astro.params;
+const data2 = await fetch(`${ siteConfig.api2 }/watch/okmw-episode-1-sub-indo.json`).then(r => (r.ok) ? r.json() : 'error');
+if (data2 === 'error' || typeof data2.watch[0].title === 'undefined') {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+}
+//console.log(data2);
+let dataAnime;
+if (data2.watch[0].title.includes(" Special ") === true) {
+dataAnime = data2.watch[0].title.split(" Special ")[0].replace(/[^a-zA-Z0-9-! ]/g,"");
+} else if (data2.watch[0].title.includes(" Bagian ") === true) {
+dataAnime = data2.watch[0].title.split(" Bagian ")[0].replace(/[^a-zA-Z0-9-! ]/g,"");
+} else if (data2.watch[0].title.includes(" OVA ") === true) {
+dataAnime = data2.watch[0].title.split(" OVA ")[0].replace(/[^a-zA-Z0-9-! ]/g,"");
+} else if (data2.watch[0].title.includes(" Episode ") === true) {
+dataAnime = data2.watch[0].title.split(" Episode ")[0].replace(/[^a-zA-Z0-9-! ]/g,"");
+}
+//const data3 = await fetch(`${ siteConfig.api3 }/search/${ dataAnime }`).then(r => (r.ok) ? r.json() : 'error');
+// for dummy, anilist api disabled
+const data3 = 'undefined';
+
+const thumb = (typeof data3.id !== 'undefined') ? `https://i2.wp.com/img.anili.st/media/${ data3.id }?resize=600,314` : data2.watch[0].img;
+const title = data2.watch[0].title;
+const description = (typeof data3.description !== 'undefined') ? data3.description : data2.watch[0].sinopsis;
+
+let pageMeta = {
+  title: `Nonton ${ title } - ${ siteConfig.title }`,
+  keywords: `${ title }, ${ siteConfig.keywords }`,
+  description: `Nonton anime ${ title } gratis, mudah dan tanpa iklan yang menganggu.`,
+  image: thumb,
+}
+---
+
+<BaseLayout pageMeta={ pageMeta }>
+  <HeaderView pageImage={ data3.bannerImage } />
+	<ViewLayout>
+	  <div class="card mb-4">         
+      <div class="card-header p-0 position-relative mt-n0 mx-0 z-index-4">
+        <iframe itemprop="embedUrl" style="width: 100%; height: 50vw; max-height: 640px;" id="mystream" loading="lazy" sandbox="allow-same-origin allow-scripts" class="border-radius-xl" src={data2.watch[0].streaming} scrolling="no" title="Nonton Streaming" frameborder="0" referrerpolicy="no-referrer" allowfullscreen></iframe>
+      </div>
+      
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h1 class="card-title text-center" style="font-size: 1.2rem;" itemprop="name">{ title }</h1>
+      </div>
+      <div class="card-body mt-n4 overflow-auto mb-4" style="height: 80vw; max-height: 360px;">
+        <p class="mb-4">
+          Nonton anime { title } mudah dan gratis tanpa iklan pop-up yang mengganggu. Tersedia berbagai kualitas video yang siap untuk didownload mulai dari low (360p), medium (480p), dan juga high (720p).
+        </p>
+        <p itemprop="description" class="mb-4 text-dark">
+          { description }
+        </p>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3 class="card-title text-center" style="font-size: 1.2rem;">Download { title }</h3>
+      </div>
+      <div class="table-responsive m-4">
+        <table class="card-body overflow-auto table table-hover mt-n2">
+          <tbody>
+          { data2.watch[0].download.map((i: any) =>
+            <tr>
+              <th>{ i.quality } ({ i.size })</th>
+              { i.link.map((z: any) =>
+              <td><a href={ z.url } rel="noopener noreferrer nofollow" target="_blank">{ z.title }</a></td>
+              )}
+            </tr>
+          )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="card rounded-2 mb-4">
+      <div class="card-header">
+        <h3 class="card-title text-center" style="font-size: 1.2rem;">Episode List</h3>
+      </div> 
+      <div class="card-body overflow-auto list-group mt-n4 mb-4" style="height: 80vw; max-height: 360px;">
+      { data2.watch[0].episode.map((i: any) =>
+        <a href={ i.url } class="list-group-item list-group-item-action">{ i.title }</a>
+      )}
+      </div>
+    </div>
+    
+    <div id="disqus" class="card mb-4" style="background-color: white !important;">
+      <div class="card-header" style="background-color: white !important;">
+        <h4 class="card-title text-center" style="font-size: 1.2rem; color: black !important;">Komentar</h4>
+      </div>
+      <div class="card-body border-radius-xl mt-n6" style="background-color: white !important;">
+        <div ><p class="text-center font-weight-bold">Komentar dinonaktifkan</p></div>
+      </div>
+    </div>
+              
+	</ViewLayout>
+</BaseLayout>

@@ -1,0 +1,64 @@
+.marquee {
+  overflow: hidden;
+  font-family: "Pridi", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.marquee__line {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+  white-space: nowrap;
+}
+.marquee__line:hover {
+  animation-name: marqueeLine;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: once;
+}
+
+@keyframes marqueeLine {
+  0% {
+    transform: translateX(0%);
+  }
+  
+  50% {
+    transform: translateX(-50%);
+  }
+  
+  100% {
+    transform: translateX(0%);
+  }
+  
+}
+
+.bg-image {z-index: 1; position: relative; background-position: center center; background-attachment: fixed; background-repeat: no-repeat; background-size: cover;}
+
+.dropdown-content {
+  display: none;
+  right: 0;
+  left: -30px;
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 130px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 6px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}

@@ -1,0 +1,24 @@
+---
+import { Image } from 'astro:assets';
+const { pageData } = Astro.props;
+const img = `https://i2.wp.com/${ pageData.img.replace('https://','') }?resize=225,320`;
+---
+
+<div class="col-md-3 col-6 text-start mb-4">
+            <div class="card h-100">
+              <div class="card-header p-0 position-relative d-block mt-n0 m-0 z-index-2 w-100 h-100">
+                <a href=`/anime/view/${ pageData.url }` title={ pageData.title } class="d-block shadow-sm border-radius-xl" data-astro-prefetch>
+                  <Image src={img} decoding="async" loading="lazy" width="225" height="320" alt={ pageData.title } class="card-img-top border-radius-xl d-block w-100 h-100" />
+                  <div class="card-img-overlay d-flex text-center flex-column justify-content-end text-light border-radius-xl">
+                  <p style="background-color: rgba(0, 0, 0, 0.5)" class="m-2 border-radius-xl text-light">{ pageData.episode }</p>
+                  </div>
+                </a>
+              </div>
+              <div class="mx-2 my-1 marquee">
+
+                <h3 class="card-title d-flex text-nowrap" style="font-size: 1rem;">
+                <a class="marquee__line" href=`/anime/view/${ pageData.url }` title={ pageData.title } itemprop="name" data-astro-prefetch>{ pageData.title }</a>
+                </h3>
+              </div>
+            </div>
+          </div>

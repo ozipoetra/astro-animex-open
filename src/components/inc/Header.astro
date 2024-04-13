@@ -1,0 +1,15 @@
+---
+const { siteTitle } = Astro.props;
+---
+
+        <header id="head" transition:name="head" transition:animate="none">
+            <div class="page-header" style="height: 80vh; min-height: 500px; max-height: 800px;">
+                <span class="mask bg-gradient-dark" style="opacity: 0.2;"></span>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 text-center mx-auto my-auto"><h1 id="logo" class="title text-white opacity-6" style="font-size: 1.5rem;">{ siteTitle }</h1></div>
+                      <p class="text-center" style="font-size: 0.6rem; color: yellow">Some feature are disabled or removed on open source version</p>
+                    </div>
+                </div>
+            </div>
+        </header>

@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ViewLayout from '../../../layouts/ViewLayout.astro';
+import HeaderView from '../../../components/inc/HeaderView.astro';
+import EpisodeHelper from '../../../components/EpisodeHelper.astro';
+import { siteConfig } from '../../../config';
+const { slug } = Astro.params;
+const data2 = await fetch(`${ siteConfig.api2 }/view/ookami-koushinryou-merchan-wise-sub-indo-2.json`).then(r => (r.ok) ? r.json() : 'error');
+//console.log(encodeURIComponent(data2.anime[0].title.split(" Subtitle ")[0]));
+
+if (data2 === 'error' || typeof data2.anime[0] === 'undefined') {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+}
+
+let dataTitle;
+if (data2.anime[0].info[1].split(": ")[1] !== ""){
+  dataTitle = data2.anime[0].info[1].split(": ")[1];
+} else {
+  dataTitle = data2.anime[0].info[0].split(": ")[1].replace(/[^a-zA-Z0-9-! ]/g,"");
+}
+//console.log(dataTitle);
+// const data3raw = await fetch(`${ siteConfig.api3 }/search/${ dataTitle }`);
+// for dummy, anilist api disabled
+const data3raw = 'undefined';
+let data3;
+if (data3raw.ok){
+  data3 = await data3raw.json();
+} else {
+  data3 = {
+    bannerImage: '',
+    description: data2.anime[0].sinopsis,
+    coverImage: {
+      large: data2.anime[0].img,
+      },
+    }
+}
+//console.log(data2.anime[0].title);
+import { Image } from 'astro:assets';
+const img = (typeof data3.coverImage.large !== 'undefined') ? `https://i2.wp.com/${ data3.coverImage.large.replace('https://','') }?resize=450,640` : data2.anime[0].img;
+const banner = `https://i2.wp.com/img.anili.st/media/${ data3.id }?resize=600,314`;
+const title = data2.anime[0].title;
+const description = (data2.anime[0].sinopsis !== '') ? data2.anime[0].sinopsis : data3.description;
+
+let pageMeta = {
+  title: `${ title } - ${ siteConfig.title }`,
+  keywords: `${ title }, ${ siteConfig.keywords }`,
+  description: `Nonton anime ${ title } gratis, mudah dan tanpa iklan yang menganggu.`,
+  image: (typeof data3.id !== 'undefined') ? banner : data2.anime[0].img,
+}
+---
+
+<BaseLayout pageMeta={ pageMeta }>
+  <HeaderView pageImage={ data3.bannerImage } />
+	<ViewLayout>
+    <div class="blur-shadow-image text-center mt-n6 mb-4">
+      <Image src={img} decoding="async" loading="lazy" class="border-radius-lg" alt={data2.anime[0].title} height="320" width="225" itemprop="thumbnail" />
+    </div>
+    
+    <div class="card mb-4">
+    <div class="card-header">
+    <h1 class="card-title text-center" style="font-size: 1.2rem;">Nonton Anime { title }</h1>
+    </div>
+    <div class="table-responsive card-body mt-n4 overflow-auto mb-4" style="height: 80vw; max-height: 360px;">
+      <table class="table table-bordered table-hover text-dark">
+        <tbody>
+        { data2.anime[0].info.map((i: any) =>
+          <tr>
+            <th>{i.split(":")[0]}</th>
+            <td>{i.split(":")[1]}</td>
+          </tr>
+        )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3 class="card-title text-center" style="font-size: 1.2rem;">Episode List</h3>
+    </div>
+    <div class="card-body list-group mt-n4 overflow-auto mb-4" style="height: 80vw; max-height: 360px;" itemprop="url">
+{ data2.anime[0].episode.map(function(i: any) {
+if(i.url.includes('#') !== true){
+ return <EpisodeHelper pageData={i} />
+}
+}.bind(data2)) }
+    </div>
+  </div>
+  
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3 class="text-center" style="font-size: 1.2rem;">Sinopsis { title }</h3>
+    </div>
+    <p class="card-body mt-n4 overflow-auto text-dark" style="height: 80vw; max-height: 360px;" itemprop="description">
+      {data3.description}
+    </p>
+  </div>
+{ (data3.trailer) ?
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3 class="text-center" style="font-size: 1.2rem;">Trailer { title }</h3>
+    </div>
+    <div class="card-body mt-n4 overflow-auto text-dark">
+    <iframe width="100%" height="360"
+    src=`https://www.youtube.com/embed/${ data3.trailer.split("=")[1] }` title={ title }>
+    </iframe>
+    </div>
+  </div>
+  : ''
+}
+  
+	</ViewLayout>
+</BaseLayout>

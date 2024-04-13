@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IndexLayout from '../layouts/IndexLayout.astro';
+import Card from '../components/Card.astro';
+import Header from '../components/inc/Header.astro';
+import { siteConfig } from '../config';
+const data2 = await fetch(`${ siteConfig.api2 }/ongoing/1.json`).then(r => (r.ok) ? r.json() : 'error');
+if (data2 === 'error') {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+}
+
+let pageMeta = {
+  title: `${ siteConfig.title } - ${ siteConfig.subtitle }`,
+  keywords: siteConfig.keywords,
+  description: siteConfig.description,
+  image: siteConfig.backgrounds,
+}
+---
+
+<BaseLayout pageMeta={ pageMeta }>
+  <Header siteTitle={ siteConfig.title } />
+      <IndexLayout pageData={ data2.pagination[0] }>
+            { data2.ongoing.map((i: any) => <Card pageData={i} />) }
+      </IndexLayout>
+</BaseLayout>

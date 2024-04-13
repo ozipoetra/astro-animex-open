@@ -1,0 +1,25 @@
+{
+  "name": "astro-animex",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev --port 3002",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.3.4",
+    "@astrojs/cloudflare": "^9.0.0",
+    "@vite-pwa/astro": "^0.2.0",
+    "astro": "^4.2.1",
+    "astro-compress": "^2.2.9",
+    "astrojs-service-worker": "^2.0.0",
+    "typescript": "^5.3.3",
+    "vite-plugin-pwa": "^0.17.5"
+  },
+  "devDependencies": {
+    "workbox-window": "^7.0.0"
+  }
+}

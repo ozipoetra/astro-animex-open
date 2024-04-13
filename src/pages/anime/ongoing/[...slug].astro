@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import IndexLayout from '../../../layouts/IndexLayout.astro';
+import Card from '../../../components/Card.astro';
+import Header from '../../../components/inc/Header.astro';
+import { siteConfig } from '../../../config';
+const { slug } = Astro.params;
+const idPage = (typeof slug !== 'undefined') ? slug : 1;
+const pageTitle = "Home Page";
+const data2 = await fetch(`${ siteConfig.api2 }/ongoing/${ idPage }.json`).then(r => r.json());
+if (typeof data2.ongoing[0] === 'undefined') {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+}
+
+let pageMeta = {
+  title: `Ongoing Anime - ${ siteConfig.title }`,
+  keywords: siteConfig.keywords,
+  description: siteConfig.description,
+  image: siteConfig.backgrounds,
+}
+---
+
+<BaseLayout pageMeta={ pageMeta }>
+  <Header siteTitle={ siteConfig.title } />
+  <IndexLayout pageData={ data2.pagination[0] }>
+    { (data2.ongoing.map((i: any) => (
+        <Card pageData={ i } />
+        )
+    )) }
+  </IndexLayout>
+</BaseLayout>
