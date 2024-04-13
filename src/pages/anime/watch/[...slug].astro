@@ -22,9 +22,8 @@ dataAnime = data2.watch[0].title.split(" OVA ")[0].replace(/[^a-zA-Z0-9-! ]/g,""
 } else if (data2.watch[0].title.includes(" Episode ") === true) {
 dataAnime = data2.watch[0].title.split(" Episode ")[0].replace(/[^a-zA-Z0-9-! ]/g,"");
 }
-//const data3 = await fetch(`${ siteConfig.api3 }/search/${ dataAnime }`).then(r => (r.ok) ? r.json() : 'error');
-// for dummy, anilist api disabled
-const data3 = 'undefined';
+const data3 = await fetch(`${ siteConfig.api2 }/anilist/ookami.json`).then(r => (r.ok) ? r.json() : 'error');
+// for dummy, anilist api
 
 const thumb = (typeof data3.id !== 'undefined') ? `https://i2.wp.com/img.anili.st/media/${ data3.id }?resize=600,314` : data2.watch[0].img;
 const title = data2.watch[0].title;

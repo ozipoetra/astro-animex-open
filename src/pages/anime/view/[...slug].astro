@@ -22,9 +22,8 @@ if (data2.anime[0].info[1].split(": ")[1] !== ""){
   dataTitle = data2.anime[0].info[0].split(": ")[1].replace(/[^a-zA-Z0-9-! ]/g,"");
 }
 //console.log(dataTitle);
-// const data3raw = await fetch(`${ siteConfig.api3 }/search/${ dataTitle }`);
-// for dummy, anilist api disabled
-const data3raw = 'undefined';
+const data3raw = await fetch(`${ siteConfig.api2 }/anilist/ookami.json`);
+// for dummy, anilist api
 let data3;
 if (data3raw.ok){
   data3 = await data3raw.json();
